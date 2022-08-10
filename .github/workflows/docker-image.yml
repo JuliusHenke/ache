@@ -6,7 +6,6 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+*'
     branches:
       - master
-      - dev
 
 jobs:
   docker-build-push:
@@ -25,7 +24,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: vidanyu/ache
+          images: juliushenke/ache
           # Create docker tags for matches branches, PRs, and version tags
           # without the 'v' prefix (e.g., '0.1.2' or '0.1.2-rc.1')
           tags: |
