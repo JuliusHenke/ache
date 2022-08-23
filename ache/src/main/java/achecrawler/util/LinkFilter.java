@@ -55,21 +55,20 @@ public class LinkFilter {
         String domain = LinkRelevance.getTopLevelDomain(link.getHost());
 
         TextMatcher hostWhitelist = hostsWhitelists.get(domain);
-        if (hostWhitelist != null && !hostWhitelist.matches(url)) {
-            return false;
-        }
         TextMatcher hostBlacklist = hostsBlacklists.get(domain);
-        if (hostBlacklist != null && !hostBlacklist.matches(url)) {
-            return false;
-        }
-        if (whitelist != null && !whitelist.matches(url)) {
-            return false;
-        }
-        if (blacklist != null && !blacklist.matches(url)) {
-            return false;
-        }
 
-        return true;
+        // Check if global blacklist or host blacklist contain url
+        if ((blacklist != null && !blacklist.matches(url)) || (hostBlacklist != null && !hostBlacklist.matches(url))) {
+            return false;
+        } else {
+            // Check if at least one whitelist is used
+            if (whitelist != null || hostWhitelist != null) {
+                // Return if one of the whitelists contains url
+                return (whitelist != null && whitelist.matches(url)) || (hostWhitelist != null && hostWhitelist.matches(url));
+            } else {
+                return true;
+            }
+        }
     }
 
     public static class PatternParams {
